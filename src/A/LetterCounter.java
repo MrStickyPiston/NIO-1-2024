@@ -21,7 +21,7 @@ public class LetterCounter {
     private static String Count(String letters) {
 
         int l = letters.length();
-        Map<Character, Integer> counts = new HashMap<Character, Integer>();
+        Map<Character, Integer> counts = new HashMap<>();
 
         for (int i = 0; i < l; i++) {
             counts.put(letters.charAt(i), counts.getOrDefault(letters.charAt(i), 0) + 1);

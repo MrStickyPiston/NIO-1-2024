@@ -32,7 +32,7 @@ public class NumberSystems {
     }
 
     private static String translate(String sourceNumber, int sourceBase, int outputBase) {
-        ArrayList<Integer> n = new ArrayList<Integer>();
+        ArrayList<Integer> n = new ArrayList<>();
 
         char[] temp = sourceNumber.toCharArray();
 
