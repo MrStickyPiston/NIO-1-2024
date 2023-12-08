@@ -1,5 +1,5 @@
-import sys
-import time
+import itertools
+from copy import deepcopy
 
 
 class Cube:
@@ -30,12 +30,15 @@ class Cube:
 
 		self.moves.append(direction)
 
+		if not -1 < self.x < 4 or not -1 < self.y < 4:
+			raise ValueError()
+
 		if not self.grid[self.y][self.x] == self.get_bottom():
 			temp = self.get_bottom()
 			self.set_bottom(self.grid[self.y][self.x])
 			self.grid[self.y][self.x] = temp
 
-			print(f'swapped {temp} for {self.get_bottom()}')
+			#print(f'swapped {temp} for {self.get_bottom()}')
 
 	def _swap_sides(self, a, b, c, d, e, f):
 		s = self.sides
@@ -48,26 +51,6 @@ class Cube:
 		self.sides[0] = v
 
 
-def find_next(cube, direction):
-	cube.rotate(direction)
-
-	if cube.sides == [1] * 6:
-		print(cube.moves)
-		return
-
-	if len(cube.moves) >= 994:
-		return
-
-	if cube.y >= 1:
-		find_next(cube, 'up')
-	if cube.x >= 1:
-		find_next(cube, 'left')
-	if cube.y <= 2:
-		find_next(cube, 'down')
-	if cube.x <= 2:
-		find_next(cube, 'right')
-
-
 def main():
 	grid = [
 		[0, 1, 0, 0],
@@ -76,26 +59,35 @@ def main():
 		[0, 1, 0, 1]
 	]
 
-	#'up',
-	#'down',
-	#'right',
-	#'left',
+	actions = [
+		'up',
+		'down',
+		'right',
+		'left'
+	]
 
-	actions = []
+	max_actions = 20
 
-	cube = Cube(grid)
+	result = []
 
-	for action in actions:
-		cube.rotate(action)
+	for i in range(10, max_actions + 1):
+		print(f'checking {i}')
+		routes = itertools.product(actions, repeat=i)
 
-	print(cube.sides)
-	print(f'Length of {cube.moves.__len__()}')
+		for route in routes:
+			cube = Cube(deepcopy(grid))
 
-	_grid = cube.grid
-	_grid[cube.y][cube.x] = f'C{_grid[cube.y][cube.x]}'
+			try:
+				for action in route:
+					cube.rotate(action)
+			except ValueError:
+				continue
 
-	for i in cube.grid:
-		print(*i, sep='\t')
+			if cube.sides == [1]*6:
+				result.append(route)
+				print(cube.moves)
+
+	print(result)
 
 
 if __name__ == '__main__':

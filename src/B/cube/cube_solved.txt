@@ -1,0 +1,16 @@
+15
+'down',
+'right',
+'up',
+'right',
+'down',
+'down',
+'right',
+'down',
+'up',
+'up',
+'left',
+'down',
+'left',
+'down',
+'up'
